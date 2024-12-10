@@ -1,0 +1,42 @@
+
+/* Light green background for cloned answers */
+.bg-light-green {
+    background-color: lightgreen;
+}
+
+/* Red background for select dropdown when values mismatch */
+.select-error {
+    background-color: red !important;
+}
+
+/* Optional styling for the hidden input */
+.Relevance-Answer.hidden {
+    display: none;
+}
+
+#navino{
+ 
+  border-radius: 20px;
+  padding: 5px;
+  }
+
+  #naviyes{
+    
+  border-radius: 20px;
+  padding: 5px;
+  }
+
+@media (max-width: 768px) {
+    .map-section {
+        width: 100%;
+        height: 200px;  /* Adjust height for mobile */
+    }
+    .info-section {
+        font-size: 14px;  /* Smaller font size for mobile */
+    }
+}
+
+#unexpected-language, #POI-closed{
+    padding: 5px;
+    border-radius: 5px;
+}

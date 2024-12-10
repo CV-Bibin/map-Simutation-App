@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Rating Practice Simulator</title>
+    <!-- Add Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header class="bg-green-600 p-6 text-white">
+        <h1 class="text-3xl font-bold text-center">Map Rating Practice Simulator</h1>
+    </header>
+
+    <main class="py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+
+            <!-- Left Section for Map -->
+            <div class="map-section bg-white rounded-lg shadow-lg border border-gray-200 p-2">
+                <iframe width="680" height="480" class="rounded-lg"></iframe>
+
+                <textarea readonly id="tips" name="tips" rows="4"
+                    class="w-full p-4 border rounded-lg mt-6 bg-white bg-green-600" placeholder="Tips"></textarea>
+
+                <div class="mt-6" id="result">
+    
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Right Section -->
+            <div class="info-section bg-white p-6 space-y-6 border rounded-lg">
+
+                <!-- Key-Value Pair Layout for Query Locale, Query, and Viewport Age -->
+                <div class="first-section flex flex-col space-y-4 border-b pb-4">
+                    <div class="flex items-center space-x-2">
+                        <label class="block text-lg font-semibold">Query Locale:</label>
+                        <span id="Querylocale" class="text-gray-700"></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label class="block text-lg font-semibold ">Query:</label>
+                        <span id="Query" class="text-blue-700 md:font-bold"></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label class="block text-lg font-semibold">Viewport Age:</label>
+                        <span id="Viewportage" class="text-gray-700"></span>
+                    </div>
+                </div>
+
+                <h4 class="text-xl font-semibold">Is there a navigational result for this query?</h4>
+                <div class="space-x-4">
+                    <div id="naviyes" class="inline-block ">
+                        <input type="radio" id="nav-y" name="navigation" value="nav-yes" class="mr-2">
+                        <label for="nav-y" class="text-gray-700">Yes</label>
+                    </div>
+                    <div id="navino" class="inline-block  ">
+                        <input type="radio" id="nav-n" name="navigation" value="nav-no" class="mr-2 ">
+                        <label for="nav-n" class="text-gray-700">No</label>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Result Information -->
+                <div class="space-y-2">
+                    <div id="ResultNameBG" class="border p-4 bg-green-200 rounded-lg">
+                        <p class="md:font-bold" id="ResultName"><strong></strong></p>
+                    </div>
+
+                    <!-- Table for Address and other details -->
+                    <table class="min-w-full table-auto text-left border-separate border-spacing-2">
+                        <tbody>
+                            <tr>
+                                <td class="font-semibold">Address:</td>
+                                <td class="text-gray-700"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Classification:</td>
+                                <td class="text-gray-700"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Distance to User:</td>
+                                <td class="text-gray-700"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Distance to Viewport:</td>
+                                <td class="text-gray-700"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Lat, Lng:</td>
+                                <td class="text-gray-700 "></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+
+                <div class="space-y-2 mt-4">
+                    <div class="inline-block" id="unexpected-language">
+                        <input type="checkbox" id="language" name="unexpected-language" class="mr-2">
+                        <label for="language" class="text-gray-700">Result name/title is in an unexpected language or
+                            script</label>
+                    </div>
+                    <div class="inline-block " id="POI-closed">
+                        <input type="checkbox" id="closure" name="POI-closed" class="mr-2">
+                        <label for="closure" class="text-gray-700">Business/POI is closed or does not exist</label>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Relevance Section -->
+                <h4 class="text-xl font-semibold">Relevance:</h4>
+
+                <div class="flex flex-row space-x-4 items-center">
+                    <!-- Dropdown Select with more width -->
+                    <div class="flex-1">
+                        <select name="Relevance" id="Relevance"
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700 required"
+                            required>
+                            <option value="" selected disabled>Select Relevance</option> <!-- Default option -->
+                            <option value="Navigational">Navigational</option>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Good">Good</option>
+                            <option value="Acceptable">Acceptable</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+
+
+
+                    <!-- Relevance Answer (smaller input) -->
+                    <div class="Relevance-Answer flex-1 hidden">
+                        <input id="RelevanceAnswer" readonly type="text" value=""
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                    </div>
+                </div>
+
+
+
+
+                <div class="space-y-2 mt-4">
+                    <div class="flex items-center" id="userintent">
+                        <input name="relevanceReas" type="checkbox" id="user-intent" class="mr-2">
+                        <label for="user-intent" class="text-gray-700">User Intent issue</label>
+                    </div>
+                    <div class="flex items-center" id="distance-rep">
+                        <input name="relevanceReas" type="checkbox" id="distance" class="mr-2">
+                        <label for="distance" class="text-gray-700">Distance/Prominence issue</label>
+                    </div>
+                </div>
+                <hr>
+
+
+                <!-- Name Accuracy Section -->
+                <h4 class="text-xl font-semibold">Name Accuracy:</h4>
+                <div class="flex flex-row space-x-4 items-center">
+                    <!-- Dropdown Select with more width -->
+                    <div class="flex-1">
+                        <select name="NameAccuracy" id="NameAccuracy"
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                            <option value="" selected disabled>Select Name Accuracy </option> <!-- Default option -->
+                            <option value="Correct">Correct</option>
+                            <option value="Partially Correct">Partially Correct</option>
+                            <option value="Wrong">Wrong</option>
+                        </select>
+                    </div>
+
+                    <!-- Name Accuracy Answer (smaller input) -->
+                    <div class="NameAccuracy-Answer flex-1 hidden">
+                        <input id="NameAccuracyAnswer" readonly type="text" value=""
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                    </div>
+                </div>
+                <hr>
+
+
+                <!-- Address Accuracy Section -->
+                <h4 class="text-xl font-semibold">Address Accuracy:</h4>
+                <div class="flex flex-row space-x-4 items-center">
+                    <!-- Dropdown Select with more width -->
+                    <div class="flex-1">
+                        <select name="AddressAccuracy" id="AddressAccuracy"
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                            <option value="" selected disabled>Select Address Accuracy </option> <!-- Default option -->
+                            <option value="Correct">Correct</option>
+                            <option value="Correct with formatting issue">Correct with formatting issue</option>
+                            <option value="Incorrect">Incorrect</option>
+                            <option value="Can't verify">Can't verify</option>
+                        </select>
+                    </div>
+
+                    <!-- Address Accuracy Answer (smaller input) -->
+                    <div class="AddressAccuracy-Answer flex-1 hidden">
+                        <input id="AddressAccuracyAnswer" readonly type="text" value=""
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                    </div>
+                </div>
+
+                <!-- streetNumber
+unit
+streetName
+locality
+region
+postalCode
+country
+addressDoesnotexist
+languageIssue
+countrySpecific
+otherIssue -->
+
+                <!-- Address Accuracy Issues Section -->
+                <div class="space-y-2 mt-4" id="address-issues" style="display: none;">
+                    <div class="flex items-center" id="ad0">
+                        <input type="checkbox" id="streetNumber" class="mr-2 ad0">
+                        <label for="street-number" class="text-gray-700">Street Number</label>
+                    </div>
+                    <div class="flex items-center" id="ad1">
+                        <input type="checkbox" id="unit" class="mr-2 ad1">
+                        <label for="unit-apt" class="text-gray-700">Unit/Apt</label>
+                    </div>
+                    <div class="flex items-center" id="ad2">
+                        <input type="checkbox" id="streetName" class="mr-2 ad2">
+                        <label for="street-name" class="text-gray-700">Street Name</label>
+                    </div>
+                    <div class="flex items-center" id="ad3">
+                        <input type="checkbox" id="locality" class="mr-2 ad3">
+                        <label for="locality" class="text-gray-700">Locality</label>
+                    </div>
+                    <div class="flex items-center" id="ad4">
+                        <input type="checkbox" id="region" class="mr-2 ad4">
+                        <label for="region" class="text-gray-700">Region/State</label>
+                    </div>
+                    <div class="flex items-center" id="ad5">
+                        <input type="checkbox" id="postalCode" class="mr-2 ad5">
+                        <label for="postal-code" class="text-gray-700">Postal Code</label>
+                    </div>
+                    <div class="flex items-center" id="ad6">
+                        <input type="checkbox" id="country" class="mr-2 ad6">
+                        <label for="country" class="text-gray-700">Country</label>
+                    </div>
+                    <div class="flex items-center" id="ad7">
+                        <input type="checkbox" id="addressDoesnotexist" class="mr-2 ad7">
+                        <label for="address-does-not-exist" class="text-gray-700">Address does not exist</label>
+                    </div>
+                    <div class="flex items-center" id="ad8">
+                        <input type="checkbox" id="languageIssue" class="mr-2 ad8">
+                        <label for="language-issue" class="text-gray-700">Language/Script issue</label>
+                    </div>
+                    <div class="flex items-center" id="ad9">
+                        <input type="checkbox" id="countrySpecific" class="mr-2 ad9">
+                        <label for="country-issue" class="text-gray-700">Country-specific issue</label>
+                    </div>
+                    <div class="flex items-center" id="ad10">
+                        <input type="checkbox" id="otherIssue" class="mr-2 ad10">
+                        <label for="other-issue" class="text-gray-700">Other issue</label>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Pin Accuracy Section -->
+                <h4 class="text-xl font-semibold">Pin Accuracy:</h4>
+
+                <div class="flex flex-row space-x-4 items-center">
+                    <!-- Dropdown Select with more width -->
+                    <div class="flex-1">
+                        <select name="PinAccuracy" id="PinAccuracy"
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700"
+                            required>
+                            <option value="" selected disabled>Select Pin Accuracy</option> <!-- Default option -->
+                            <option value="Perfect">Perfect</option>
+                            <option value="Approximate">Approximate</option>
+                            <option value="Next Door">Next Door</option>
+                            <option value="Wrong">Wrong</option>
+                            <option value="Can't verify">Can't verify</option>
+                        </select>
+
+                    </div>
+
+                    <!-- Pin Accuracy Answer (smaller input) -->
+                    <div class="PinAccuracy-Answer flex-1 hidden">
+                        <input id="PinAccuracyAnswer" readonly type="text" value=""
+                            class="block w-full md:w-64 lg:w-80 px-4 py-2 border rounded-lg bg-white text-gray-700">
+                    </div>
+                </div>
+
+
+                <!-- Comments Section -->
+                <h4 class="text-xl font-semibold">Comments:</h4>
+                <textarea readonly id="comments" name="comments" rows="4"
+                    class="w-full p-4 border rounded-lg bg-white text-gray-700"
+                    placeholder="Enter your comments here"></textarea>
+
+                <div class="mt-6 text-center">
+                    <!-- Submit Button -->
+                    <button onclick="checkAsnwr()" id="rate-btn"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Check Answer</button>
+
+                    <!-- Next Question Button -->
+                    <button id="next-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 ml-4"
+                        disabled>Next Question</button>
+                    <!-- Rating Display -->
+                    <p class="mt-4 text-lg">Submitted Questions: <span id="rating-value">0</span></p>
+
+                    <!-- Feedback Section -->
+                    <div id="feedback"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-blue-600 text-white p-4 text-center">
+        <p>BCV-Legend</p>
+    </footer>
+    <script src="dataLoad.js"></script>
+    <script src="/script.js"></script>
+
+</body>
+
+</html>
+<!-- streetNumber
+unit
+streetName
+locality
+region
+postalCode
+country
+addressDoesnotexist
+languageIssue
+countrySpecific
+otherIssue -->
