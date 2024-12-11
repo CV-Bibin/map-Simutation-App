@@ -165,13 +165,223 @@
           "NameAccuracy": "Correct",
           "AddressAccuracy": "Incorrect",
           "PinAccuracy": "Next Door",
-          "comments": "in lands in the Next Door Rooftop. Check 9.1.4 Next Door"
+          "comments": "Pin lands in the Next Door Rooftop. Check 9.1.4 Next Door"
         },
         "radioAnswers": {
           "unexpectedlanguage": "no",
           "POIclosed": "no",
           "relevanceReason": ["distance"],
           "addressReason": ["unit"]
+        }
+      },
+      {
+        "questionId": 7,
+        "queryLocale": "en_US",
+        "query": "green sand beach",
+        "viewportAge": "Fresh",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1UdRXj82EFJfxHvU5Fe_9A_0YH31jCMA&ehbc=2E312F",
+        "business": {
+          "name": "3. Papakōlea Green Sand Beach",
+          "address": "Naalehu, HI 96772",
+          "classification": "Beach",
+          "distanceToUser": "104.1 km",
+          "distanceToViewport": "65.8 km",
+          "latLng": "18.9363, -155.64604"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-yes",
+          "Relevance": "Navigational",
+          "NameAccuracy": "Correct",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "Typically natural features do not have a street address, so natural feature results should be returned without any street address components. If a street address is present, it is considered Incorrect. Other Issue."
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": [],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 8,
+        "queryLocale": "en_US",
+        "query": "peabody duck lobby Memphis",
+        "viewportAge": "Stale",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1tM2ks2BxOZY3_GRjW2X0EG-JS_vye-w&ehbc=2E312F",
+        "business": {
+          "name": "2. The Peabody Memphis",
+          "address": "149 Union Ave, Memphis, TN 38103",
+          "classification": "Hotel",
+          "distanceToUser": "11.23 km",
+          "distanceToViewport": "0 km",
+          "latLng": "35.14271, -90.05194"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-yes",
+          "Relevance": "Navigational",
+          "NameAccuracy": "Correct",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Approximate",
+        "comments": "The pin drops off the edge of the appropriate rooftop and should be rated Approximate"
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": [],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 9,
+        "queryLocale": "en_US",
+        "query": "1804 Felicity St, New Orleans, LA 70113",
+        "viewportAge": "Stale",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1rwsNmm2ud9wqm0Tzg0dlQyB2xNNnVkk&ehbc=2E312F",
+        "business": {
+          "name": "2. 1804 Felicity St",
+          "address": "1804 Felicity St, New Orleans, LA 70113",
+          "classification": "",
+          "distanceToUser": "1.99 km",
+          "distanceToViewport": "933 m",
+          "latLng": "29.93822, -90.07996"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-yes",
+          "Relevance": "Navigational",
+          "NameAccuracy": "N/A",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "The pin drops off the edge of the appropriate rooftop and should be rated Approximate"
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": [],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 10,
+        "queryLocale": "en_US",
+        "query": "how to make a pizza",
+        "viewportAge": "Fresh",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1MKk7-b0wCBgJHcZWB8qEYj2a4BYeAkU&ehbc=2E312F",
+        "business": {
+          "name": "3. Pizzeria Magaddino",
+          "address": "1105 NE 13th St, Fort Lauderdale, FL 33304",
+          "classification": "Bar",
+          "distanceToUser": "3.1 km",
+          "distanceToViewport": "0 km",
+          "latLng": "26.14275, -80.13228"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-no",
+          "Relevance": "Bad",
+          "NameAccuracy": "Incorrect",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "Relevance: Bad as the query has no Maps Intent.Name Accuracy: Incorrect, because of classification."
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": ["userintent"],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 11,
+        "queryLocale": "en_US",
+        "query": "denver",
+        "viewportAge": "Fresh",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1qLwDnpmshc4gOmBpNbxelzCCOQUBywg&ehbc=2E312F",
+        "business": {
+          "name": "1.Denver International Airport",
+          "address": "1105 NE 13th St, Fort Lauderdale, FL 33304",
+          "classification": "Airport",
+          "distanceToUser": "23 km",
+          "distanceToViewport": "0 km",
+          "latLng": "39.85009, -104.67365"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-yes",
+          "Relevance": "Good",
+          "NameAccuracy": "Correct",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "The result represents the airport within thequeried locality, which satisfies the secondary transit intent."
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": ["userintent"],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 12,
+        "queryLocale": "en_US",
+        "query": "denver",
+        "viewportAge": "Fresh",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1qLwDnpmshc4gOmBpNbxelzCCOQUBywg&ehbc=2E312F",
+        "business": {
+          "name": "3. Denver",
+          "address": "Denver, Colorado, USA",
+          "classification": "Address",
+          "distanceToUser": "5 km",
+          "distanceToViewport": "30 km",
+          "latLng": "39.74077, -104.98023"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-yes",
+          "Relevance": "Navigational",
+          "NameAccuracy": "N/A",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "Query is for the city of SDenver and the result satisfies the user intent."
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": [],
+          "addressReason": []
+        }
+      },
+      {
+        "questionId": 13,
+        "queryLocale": "en_US",
+        "query": "Costco Gasoline",
+        "viewportAge": "Fresh",
+        "iframesrc": "https://www.google.com/maps/d/embed?mid=1IEdLFRHH3gWcD9R8bGyfRWJgeuHaTDo&ehbc=2E312F",
+        "business": {
+          "name": "1. Costco Wholesale",
+          "address": "4589 Kapolei Pkwy Kapolei, HI 96707 United States",
+          "classification": "Warehouse store",
+          "distanceToUser": "23 km",
+          "distanceToViewport": "300 m",
+          "latLng": "21.32671, -158.08776"
+        },
+        "correctAnswers": {
+          "Navigation": "nav-no",
+          "Relevance": "Bad",
+          "NameAccuracy": "Correct",
+          "AddressAccuracy": "Correct",
+          "PinAccuracy": "Perfect",
+        "comments": "Relevance: Bad sinec the user is looking for costo gasoline not  costo wholesale ."
+    
+        },
+        "radioAnswers": {
+          "unexpectedlanguage": "no",
+          "POIclosed": "no",
+          "relevanceReason": ["userintent"],
+          "addressReason": []
         }
       }
     ]
