@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="flex max-w-6xl mx-auto p-6">
+        
+        <!-- Left Section (User List) -->
+        <div class="w-1/3 pr-6">
+            <h1 class="text-3xl font-semibold mb-4">User List</h1>
+            
+            <div id="error-message" class="text-red-500 mb-4"></div>
+            
+            <table id="users-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Username</th>
+                        <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Role</th>
+                        <th class="py-3 px-6 text-left text-sm font-medium text-gray-700">Last login </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Users will be listed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="errorItem">
+            
+        </div>
+
+        <!-- Right Section (User Details) -->
+        <div id="user-details" class="w-2/3 p-6 bg-white shadow-md rounded-lg hidden">
+            <h2 class="text-2xl font-semibold mb-4" id="profile-username"></h2>
+            <p><strong>Role:</strong> <span id="profile-role"></span></p>
+            <p><strong>Total attempted questions:</strong> <span id="total-atqstns"></span></p>
+            <p><strong>Number of wrong answers:</strong> <span id="total-wrong"></span></p>
+            <p><strong>Relevance accuracy:</strong> <span id="profile-relevance"></span></p>
+            <p><strong>Name accuracy:</strong> <span id="profile-name"></span></p>
+            <p><strong>Address accuracy:</strong> <span id="profile-address"></span></p>
+            <p><strong>Pin accuracy:</strong> <span id="profile-pin"></span></p>
+            <p><strong>Details of wrong answers:</strong> <span id="profile-wrong"></span></p>
+            <button onclick="restting()"> reset</button>
+        </div>
+    </div>
+
+    <script src="./admin.js"></script>
+</body>
+</html>

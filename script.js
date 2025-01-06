@@ -1,96 +1,106 @@
-// For any Relevance Rating of Good or below, you must select the appropriate check box(es) to
-// indicate the reason(s)for demotion: User Intent and/or Distance/Prominence. If both reasons apply,
-// use both checkboxes.
-
-
-// Query is "Agra" then the result Taj Mahal must have the Relevance Good (User Intent) since Result is for a prominent site in the queried
-// locality. The Taj Mahal does not satisfy the user’s
-// primary intent. However, it is promoted to
-// secondary intent due to the international
-// prominence of the feature in the queried locality.( if the query is  address and the result is either transit station like railway station or airport bus stand (but not bus stop) or international
-// prominence feature  can only give the relevance of "good".
-
-// When a query address and a result address are not exactly the same, the kind of connection they
-// have depends on their relationship:
-// • Street number is the same in both query and result but the unit number is different or missing:
-// • If neither address is a street extension, rate result relevance Good when:
-// ▪ The query contains a unit number and the result does not.
-// ▪ The result contains a unit number and the query does not.
-// ▪ The query contains one unit number and the result contains another.
-// • The query is full address including street number and name and the result is the street name
-// only:
-// • Since this result is an unlikely secondary intent, rate relevance as Acceptable.
-// • Query is for a street [Main Street, Pleasanton, CA] result is just the locality (Pleasanton, CA).
-// • Rate the result relevance Bad as it does not satisfy the user intent.
-
-// Store login credentials in this object (in a real app, store hashed passwords and use proper authentication)
-// Define user credentials (admin and three regular users)
-const users = [
-    { username: 'bibin', password: 'admin123', role: 'admin' },
-    { username: 'vivek', password: 'vivek@1995', role: 'user' },
-    { username: 'sarath', password: 'sarath123', role: 'user' },
-    { username: 'user2', password: 'user234', role: 'user' },
-    { username: 'user3', password: 'user345', role: 'user' }
-];
-
-
-const sessionExpiryTime = 10 * 60 * 60 * 1000; 
-
-
-window.onload = function () {
+// Function to handle form submissions (Login and Question Attempt)
+async function handleFormSubmit(event, url, dataToSend, successCallback, errorMessageElement) {
+    event.preventDefault(); 
    
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault(); 
-    });
+    errorMessageElement.textContent = '';
 
-    // Check login status
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const loginTimestamp = localStorage.getItem('loginTimestamp');
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+        });
 
-    // If the user is logged in, check if the session has expired
-    if (isLoggedIn && loginTimestamp) {
-        const currentTime = new Date().getTime();
-        const timeElapsed = currentTime - loginTimestamp;
+        const data = await response.json();
 
-        // If 10 hours have passed, log out the user
-        if (timeElapsed >= sessionExpiryTime) {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('role');
-            localStorage.removeItem('loginTimestamp');
-            alert('Session expired. Please log in again.');
-            window.location.href = '/login.html'; // Redirect to login page after session expiry
-            return;
+        if (response.ok) {
+            successCallback(data); // Call the success callback if response is ok
+        } else {
+            // Display the error message from the backend
+            errorMessageElement.textContent = data.message || 'Request failed';
         }
+    } catch (error) {
+        // Handle errors in case the backend request fails
+        console.error('Error during request:', error); // Log the error
+        errorMessageElement.textContent = 'An error occurred. Please try again.';
     }
+}
 
-    // If the user is not logged in and they are on the index.html page, redirect to login
-    if (!isLoggedIn && window.location.pathname !== '/login.html') {
-        window.location.href = '/login.html'; // Redirect to login if not logged in
-    }
-
-    // Optionally, you can check the role and display different content based on the user type
-    const userRole = localStorage.getItem('role');
-    console.log('Logged in as:', userRole); // This will log either 'admin' or 'user'
-};
-
-// Handle login form submission on login.html
+// Login form handler
 document.getElementById('login-form')?.addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
-    // Find the user from the users array
-    const user = users.find(user => user.username === username && user.password === password);
+    
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorMessage = document.getElementById('error-message'); 
 
-    if (user) {
-        // If user is found, set login status and role in localStorage
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('role', user.role); // Store the role (admin/user)
-        localStorage.setItem('loginTimestamp', new Date().getTime()); // Store the login timestamp
-        window.location.href = '/index.html'; // Redirect to index.html after successful login
-    } else {
-        // If user credentials don't match, alert the user
-        alert('Invalid username or password');
-    }
+
+     
+
+
+
+
+    handleFormSubmit(event, 'http://localhost:5000/login', 
+        { username, password }, 
+        (data) => {
+            // Store the JWT token in localStorage
+            localStorage.setItem('token', data.token);
+
+            // Optionally, store the role or other user details
+            const decodedToken = JSON.parse(atob(data.token.split('.')[1]));
+            localStorage.setItem('role', decodedToken.role);
+            localStorage.setItem('username', data.username); 
+            localStorage.setItem('userId', decodedToken.userId);
+
+           
+
+           
+          
+            // Redirect to the home page or dashboard
+            window.location.href = '/index.html';
+        }, 
+        errorMessage
+    );
 });
+
+// Logout function
+document.getElementById('logout-btn')?.addEventListener('click', function () {
+    // Clear token and role from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+
+    let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions')) || [];
+
+// Remove the last element from the array
+usedQuestions.pop();
+
+// Save the updated array back into localStorage
+localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
+
+    // Optionally, redirect the user to the login page
+    window.location.replace('/login.html'); // Replaces the current page with the login page
+});
+
+// Question form handler
+document.getElementById('question-form')?.addEventListener('submit', function (event) {
+    const userId = localStorage.getItem('userId');
+    const questionId = document.getElementById('questionId').value.trim();
+    const answer = document.getElementById('answer').value.trim();
+    const errorMessage = document.getElementById('error-message'); 
+
+    handleFormSubmit(event, 'http://localhost:5000/attempt', 
+        { userId, questionId, answer }, 
+        (data) => {
+            // Optionally, display whether the answer was correct
+            const resultMessage = data.isCorrect ? 'Correct answer!' : 'Wrong answer';
+            alert(resultMessage); 
+        },
+        errorMessage
+    );
+});
+

@@ -1,7 +1,9 @@
 
 let currentQuestion = null;
 
-var countQstn=0;
+var countQstn = 0;
+
+let wrongAns = [];
 
 
 let errorCount = {
@@ -11,11 +13,70 @@ let errorCount = {
     PinAccuracy: 0,
 };
 
-function resetting() {
-    let relper = (((countQstn - errorCount.Relevance) / countQstn) * 100).toFixed(1);
-    let relname = (((countQstn - errorCount.NameAccuracy) / countQstn) * 100).toFixed(1);
-    let reladdrss = (((countQstn - errorCount.AddressAccuracy) / countQstn) * 100).toFixed(1);
-    let relpin = (((countQstn - errorCount.PinAccuracy) / countQstn) * 100).toFixed(1);
+
+
+
+async function sendDataToMongo() {
+    let username = localStorage.getItem('username'); // Fetching the username from localStorage
+    if (!username) {
+        console.error("Username not found in localStorage");
+        return;
+    }
+
+    let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions')) || [];
+    let errorCount = JSON.parse(localStorage.getItem('errorCount')) || {
+        Relevance: 0,
+        NameAccuracy: 0,
+        AddressAccuracy: 0,
+        PinAccuracy: 0
+    };
+
+    // Prepare the data from localStorage
+    const userData = {
+        username: username,
+        questions_attempted: usedQuestions.length,
+        relevance_accuracy: errorCount.Relevance,
+        name_accuracy: errorCount.NameAccuracy,
+        address_accuracy: errorCount.AddressAccuracy,
+        pin_accuracy: errorCount.PinAccuracy,
+        wrong_questions: usedQuestions,
+    };
+
+    // Send data to the backend API
+    try {
+        const response = await fetch('http://localhost:3000/saveUserData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                data: userData
+            })
+        });
+
+        const result = await response.json();
+        console.log(result.message);  // Data saved message
+    } catch (error) {
+        console.error('Error sending data:', error);
+    }
+}
+
+
+
+
+
+
+
+function resetting(totQstns) {
+    let relper = (((totQstns - errorCount.Relevance) / totQstns) * 100).toFixed(1);
+    let relname = (((totQstns - errorCount.NameAccuracy) / totQstns) * 100).toFixed(1);
+    let reladdrss = (((totQstns - errorCount.AddressAccuracy) / totQstns) * 100).toFixed(1);
+    let relpin = (((totQstns - errorCount.PinAccuracy) / totQstns) * 100).toFixed(1);
+    // Reset usedQuestions to an empty array
+
+    localStorage.setItem('errorCount', JSON.stringify(errorCount));
+
 
     // Create HTML content with Tailwind CSS classes
     const resultHTML = `
@@ -30,12 +91,24 @@ function resetting() {
 
     // Set the innerHTML of the div with the id 'result'
     document.getElementById('result').innerHTML = resultHTML;
+
+
+    localStorage.setItem('usrnm', JSON.stringify(0));
+
+    // document.getElementById('total-value').innerHTML=totQstns;
+    errorCount = {
+        Relevance: 0,
+        NameAccuracy: 0,
+        AddressAccuracy: 0,
+        PinAccuracy: 0,
+    };
+    localStorage.setItem('errorCount', JSON.stringify(errorCount));
 }
 
 
 
 
-fetch('data/questions.json')
+fetch('http://localhost:5000/api/questions')
     .then(response => {
         if (!response.ok) {
             throw new Error('Failed to fetch questions data');
@@ -43,16 +116,19 @@ fetch('data/questions.json')
         return response.json();
     })
     .then(data => {
-        let usedQuestions = [];
+        let usedQuestions = JSON.parse(localStorage.getItem('usedQuestions')) || [];
+
 
         // Function to get a random unique question
         function getUniqueQuestion() {
             let randmNum;
             do {
-                randmNum = Math.floor(Math.random() * data.questions.length);
+                randmNum = Math.floor(Math.random() * data.questions[0].questions.length);
             } while (usedQuestions.includes(randmNum));
             usedQuestions.push(randmNum);
-            return data.questions[randmNum];
+
+            localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
+            return data.questions[0].questions[randmNum];
         }
 
         // Function to update the page with a new question
@@ -139,9 +215,9 @@ fetch('data/questions.json')
                 document.getElementById('ad9').style.border = "2px solid white";
                 document.getElementById('ad10').style.border = "2px solid white";
                 countQstn++;
-document.getElementById('rating-value').innerHTML=countQstn;
-                
-                
+                document.getElementById('rating-value').innerHTML = countQstn;
+
+
 
 
 
@@ -170,18 +246,24 @@ document.getElementById('rating-value').innerHTML=countQstn;
 
 
             setTimeout(() => {
-                if (usedQuestions.length < data.questions.length) {
+                if (usedQuestions.length < data.questions[0].questions.length) {
                     updateQuestion();
 
 
 
                 } else {
+
                     document.getElementById('next-btn').disabled = true;
                     document.getElementById('rate-btn').disabled = true;
                     alert('No more questions !');
-                    resetting();
-                     
-                    
+                    let totQstns = usedQuestions.length;
+                    localStorage.setItem('totQstns', JSON.stringify(totQstns));
+                    resetting(totQstns);
+                    sendDataToMongo();
+                    usedQuestions = [];
+                    localStorage.setItem('usedQuestions', JSON.stringify([]));
+
+
                 }
             }, 1000);
         });
@@ -227,6 +309,13 @@ function checkAsnwr() {
 
 
 
+    setTimeout(function () {
+        const sendDataBtn = document.getElementById('sendDataBtn');
+        if (sendDataBtn) {
+            sendDataBtn.click(); // Programmatically trigger the button click
+        }
+    }, 1000);
+
 
 
 
@@ -249,22 +338,22 @@ function checkAsnwr() {
         { selectId: 'AddressAccuracy', inputClass: '.AddressAccuracy-Answer input' },
         { selectId: 'PinAccuracy', inputClass: '.PinAccuracy-Answer input' },
     ];
-    
+
     sections.forEach(section => {
         const selectElement = document.getElementById(section.selectId);
         const inputElement = document.querySelector(section.inputClass);
-    
+
         if (selectElement.value !== inputElement.value) {
             selectElement.classList.add('select-error');
-            errorCount[section.selectId] ++;  // Increment error count to 1 if mismatch
+            errorCount[section.selectId]++;  // Increment error count to 1 if mismatch
         } else {
             selectElement.classList.remove('select-error');
             errorCount[section.selectId] + 0;  // Set to 0 if no error
         }
-        
-        inputElement.style.backgroundColor = 'lightgreen';  // Keep your style unchanged
+
+        inputElement.style.backgroundColor = 'lightgreen';
     });
-    
+
     console.log(errorCount);
 
     // Show cloned answer divs

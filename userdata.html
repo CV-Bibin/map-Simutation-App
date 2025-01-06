@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- Right Section (User Details) -->
+        <div id="user-details" class="p-6 bg-white shadow-md rounded-lg">
+            <h2 class="text-2xl font-semibold mb-4" id="profile-username"></h2>
+            <p><strong>Role:</strong> <span id="profile-role"></span></p>
+            <p><strong>Total attempted questions:</strong> <span id="total-atqstns"></span></p>
+            <p><strong>Number questions:</strong> <span id="total-wrong"></span></p>
+            <p><strong>Relevance accuracy:</strong> <span id="profile-relevance"></span></p>
+            <p><strong>Name accuracy:</strong> <span id="profile-name"></span></p>
+            <p><strong>Address accuracy:</strong> <span id="profile-address"></span></p>
+            <p><strong>Pin accuracy:</strong> <span id="profile-pin"></span></p>
+            <p><strong>Details of wrong answers:</strong> <span id="profile-wrong"></span></p>
+            
+        </div>
+    </div>
+
+    <script src="./userData.js"></script>
+</body>
+</html>

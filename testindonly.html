@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All User Profiles</title>
+</head>
+
+<body>
+
+    <h1>All User Profiles</h1>
+    
+    <!-- Container to display all user data -->
+    <div id="userList"></div>
+
+    <script>
+        // Function to fetch and display all user data
+        async function fetchAllUserData() {
+            try {
+                // Send a request to fetch all user data
+                const response = await fetch('http://localhost:3000/getAllUserData');
+                const data = await response.json();
+
+                if (data && data.users) {
+                    const userListDiv = document.getElementById('userList');
+                    userListDiv.innerHTML = ''; // Clear any existing content
+
+                    // Loop through each user and create a list of their data
+                    data.users.forEach(user => {
+                        const userDiv = document.createElement('div');
+                        userDiv.style.border = "1px solid #ddd";
+                        userDiv.style.margin = "10px";
+                        userDiv.style.padding = "10px";
+                        userDiv.style.borderRadius = "5px";
+                        
+                        // Display user data
+                        userDiv.innerHTML = `
+                            <h3>Username: ${user.username}</h3>
+                            <p><strong>Questions Attempted:</strong> ${user.questions_attempted}</p>
+                            <p><strong>Relevance Accuracy:</strong> ${user.relevance_accuracy}</p>
+                            <p><strong>Name Accuracy:</strong> ${user.name_accuracy}</p>
+                            <p><strong>Address Accuracy:</strong> ${user.address_accuracy}</p>
+                            <p><strong>Pin Accuracy:</strong> ${user.pin_accuracy}</p>
+                            <p><strong>Wrong Questions:</strong> ${user.wrong_questions.join(', ')}</p>
+                        `;
+
+                        // Append the user data to the user list
+                        userListDiv.appendChild(userDiv);
+                    });
+                } else {
+                    console.log('No users found');
+                }
+            } catch (error) {
+                console.error('Error fetching all user data:', error);
+            }
+        }
+
+        // Call the function to fetch and display all users' data on page load
+        fetchAllUserData();
+    </script>
+
+</body>
+
+</html>

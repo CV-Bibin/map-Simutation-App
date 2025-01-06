@@ -11,9 +11,16 @@
 </head>
 
 <body class="bg-gray-100 font-sans">
-    <header class="bg-green-600 p-6 text-white">
-        <h1 class="text-3xl font-bold text-center">Map Rating Practice Simulator</h1>
+    <header class="bg-green-600 p-6 text-white flex justify-between items-center">
+        <h3 id="UserNam"></h3>
+        <h1 class="text-3xl font-bold">Map Rating Practice Simulator</h1>
+
+        <button onclick="logoutbtn()" id="logout-btn"
+            class="bg-yellow-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-yellow-400">
+            Save & Logout
+        </button>
     </header>
+
 
     <main class="py-8">
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
@@ -22,15 +29,33 @@
             <div class="map-section bg-white rounded-lg shadow-lg border border-gray-200 p-2">
                 <iframe width="680" height="480" class="rounded-lg"></iframe>
 
+
                 <textarea readonly id="tips" name="tips" rows="4"
-                    class="w-full p-4 border rounded-lg mt-6 bg-white bg-green-600" placeholder="Tips"></textarea>
+                    class="w-full p-4 border  rounded-lg mt-6 bg-white bg-green-600 font-serif text-gray-500 "
+                    placeholder="all doubts and answeres retated to this questions"></textarea>
+
+
+                <div class="relative w-full">
+                    <textarea id="doubts" name="doubts" rows="4"
+                        class="w-full p-4 border border-green-600 rounded-lg mt-6 bg-white font-serif text-black"
+                        placeholder="Enter your doubts here, and we will provide explanations."></textarea>
+                    <button
+                        class=" border border-green-600 absolute right-4 bottom-4 bg-white text-gray-600 px-4 py-2 rounded-lg">
+                        Post
+                    </button>
+                </div>
+                <textarea readonly id="Answers" name="Answers" rows="4"
+                    class="w-full p-4 border  rounded-lg mt-6 bg-white bg-green-600 font-serif text-gray-500 "
+                    placeholder="Answer from admin"></textarea>
+
 
                 <div class="mt-6" id="result">
-    
+
                 </div>
 
 
             </div>
+
 
 
 
@@ -307,6 +332,7 @@ otherIssue -->
                         disabled>Next Question</button>
                     <!-- Rating Display -->
                     <p class="mt-4 text-lg">Submitted Questions: <span id="rating-value">0</span></p>
+                    <!-- <p class="mt-4 text-lg">Total Questions Submitted: <span id="total-value">0</span></p> -->
 
                     <!-- Feedback Section -->
                     <div id="feedback"></div>
@@ -321,6 +347,7 @@ otherIssue -->
     </footer>
     <script src="dataLoad.js"></script>
     <script src="/script.js"></script>
+    <script src="./storeAnswr.js"></script>
 
 </body>
 

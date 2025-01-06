@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>View Data</h1>
+
+    <!-- Users Table -->
+    <h2>Users</h2>
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Questions Table -->
+    <h2>Quiz Questions</h2>
+    <table id="questionsTable">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Options</th>
+                <th>Correct Answer</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- User Data Table -->
+    <h2>User Data (Quiz Performance)</h2>
+    <table id="userDataTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Questions Attempted</th>
+                <th>Relevance Accuracy</th>
+                <th>Name Accuracy</th>
+                <th>Address Accuracy</th>
+                <th>Pin Accuracy</th>
+                <th>Wrong Questions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Function to fetch users from the API
+        async function fetchUsers() {
+            try {
+                const response = await fetch('http://localhost:5000/api/users');
+                const data = await response.json();
+                const usersTableBody = document.querySelector('#usersTable tbody');
+                usersTableBody.innerHTML = ''; // Clear existing table rows
+
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.role}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                    `;
+                    usersTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        // Function to fetch quiz questions from the API
+        async function fetchQuestions() {
+            try {
+                const response = await fetch('http://localhost:5000/api/questions');
+                const data = await response.json();
+                const questionsTableBody = document.querySelector('#questionsTable tbody');
+                questionsTableBody.innerHTML = ''; // Clear existing table rows
+
+                data.questions.forEach(question => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${question.questionText}</td>
+                        <td>${question.options.join(', ')}</td>
+                        <td>${question.correctAnswer}</td>
+                    `;
+                    questionsTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+            }
+        }
+
+        // Function to fetch user performance data from the API
+        async function fetchUserData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/userData');
+                const data = await response.json();
+                const userDataTableBody = document.querySelector('#userDataTable tbody');
+                userDataTableBody.innerHTML = ''; // Clear existing table rows
+
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.questions_attempted}</td>
+                        <td>${user.relevance_accuracy}</td>
+                        <td>${user.name_accuracy}</td>
+                        <td>${user.address_accuracy}</td>
+                        <td>${user.pin_accuracy}</td>
+                        <td>${user.wrong_questions.join(', ')}</td>
+                    `;
+                    userDataTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+
+        // Fetch data when the page loads
+        window.onload = () => {
+            fetchUsers();
+            fetchQuestions();
+            fetchUserData();
+        };
+    </script>
+
+</body>
+</html>
