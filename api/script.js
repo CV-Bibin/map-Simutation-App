@@ -60,7 +60,7 @@ document.getElementById('login-form')?.addEventListener('submit', function (even
            
           
             // Redirect to the home page or dashboard
-            window.location.href = '/index.html';
+            window.location.href = '../public/index.html';
         }, 
         errorMessage
     );
@@ -83,7 +83,7 @@ usedQuestions.pop();
 localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
 
     // Optionally, redirect the user to the login page
-    window.location.replace('/login.html'); // Replaces the current page with the login page
+    window.location.replace('../public/login.html'); // Replaces the current page with the login page
 });
 
 // Question form handler
