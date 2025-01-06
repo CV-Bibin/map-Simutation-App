@@ -1,10 +1,9 @@
 {
   "name": "map-simulate",
   "version": "1.0.0",
-  "main": "dataLoad.js", 
   "scripts": {
     "start": "node server.js",  
-    "build": "echo 'No build process'" 
+    "build": "echo 'No build process'"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

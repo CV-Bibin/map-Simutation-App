@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 
 const app = express();
-const PORT = 5000;
-const port = 3000;  // Port for the second server if needed
 
 // MongoDB connection strings for both databases
 const loginDB_URI = 'mongodb+srv://iambibin:cGggPH5xKOVY42I7@map-users.ridby.mongodb.net/login?retryWrites=true&w=majority';
@@ -58,11 +56,9 @@ const questionSchema = new mongoose.Schema({
 });
 
 let Question;
-
-// Initialize the database connection and set up the model
 connectDatabases().then((quizDBConnection) => {
     // Register the model with the 'queries' collection explicitly
-    Question = quizDBConnection.model('Question', questionSchema, 'queries');  // Specify 'queries' as the collection name
+    Question = quizDBConnection.model('Question', questionSchema, 'queries');
 }).catch((err) => {
     console.error('Error connecting to databases:', err);
 });
@@ -140,7 +136,7 @@ app.post('/attempt', async (req, res) => {
     }
 });
 
-// Route to fetch questions from MongoDB using Mongoose
+// Route to fetch all quiz questions from the quiz database
 app.get('/api/questions', async (req, res) => {
     try {
         const questions = await Question.find();
@@ -149,17 +145,6 @@ app.get('/api/questions', async (req, res) => {
         res.status(500).send('Error fetching questions');
     }
 });
-
-// Route to fetch all users from the login database
-app.get('/api/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json({ users });
-    } catch (error) {
-        res.status(500).send('Error fetching users');
-    }
-});
-
 
 // Route to handle saving user data to MongoDB (Second server)
 app.post('/saveUserData', async (req, res) => {
@@ -188,7 +173,6 @@ app.post('/saveUserData', async (req, res) => {
             date_saved: new Date() // Adding a timestamp to track when the data was saved
         };
         
-        // Insert a new record for the user data without overwriting any existing data
         const result = await collection.insertOne(userDocument);
 
         res.status(200).json({ message: 'User data saved successfully!' });
@@ -197,58 +181,7 @@ app.post('/saveUserData', async (req, res) => {
     }
 });
 
-// Route to fetch all users from the login database
-app.get('/api/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json({ users });
-    } catch (error) {
-        res.status(500).send('Error fetching users');
-    }
-});
-
-// Route to fetch all quiz questions from the quiz database
-app.get('/api/questions', async (req, res) => {
-    try {
-        const questions = await Question.find(); // This fetches all questions from MongoDB
-        res.json({ questions });
-    } catch (error) {
-        res.status(500).send('Error fetching questions');
-    }
-});
-
-// Route to fetch all user data from the 'userquizData' database (for viewing quiz-related statistics)
-app.get('/api/userData', async (req, res) => {
-    try {
-        const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        await client.connect();
-
-        const db = client.db(dbName);
-        const collection = db.collection(collectionName);
-        
-        // Fetch all user data from MongoDB (user data statistics like quiz performance)
-        const userData = await collection.find().toArray();
-
-        res.status(200).json(userData);
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).json({ error: 'Failed to fetch user data' });
-    }
-});
-
-
-
-
-
-
-
-
-// Start the first server (login & quiz data API)
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
-// Start the second server (user data API)
-app.listen(port, () => {
-    console.log(`Second server is running on http://localhost:${port}`);
+// Start the server (Vercel automatically assigns a port)
+app.listen(process.env.PORT || 5000, () => {
+    console.log(`Server running on port ${process.env.PORT || 5000}`);
 });
